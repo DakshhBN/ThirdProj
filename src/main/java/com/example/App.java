@@ -6,28 +6,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 public class App {
-
     public static void main(String[] args) {
 
         ChromeOptions options = new ChromeOptions();
 
-        // Required for CI/CD pipelines
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless=new");        // Headless mode for Linux/CI
+        options.addArguments("--no-sandbox");          // Required in VM/container
+        options.addArguments("--disable-dev-shm-usage"); // Avoid shared memory issues
 
         WebDriver driver = new ChromeDriver(options);
 
         driver.get("https://www.saucedemo.com/");
 
-        driver.findElement(By.id("user-name"))
-              .sendKeys("standard_user");
-
-        driver.findElement(By.id("password"))
-              .sendKeys("secret_sauce");
-
-        driver.findElement(By.id("login-button"))
-              .click();
+        driver.findElement(By.id("user-name")).sendKeys("standard_user");
+        driver.findElement(By.id("password")).sendKeys("secret_sauce");
+        driver.findElement(By.id("login-button")).click();
 
         System.out.println("Login successful");
 
