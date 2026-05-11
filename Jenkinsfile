@@ -1,49 +1,45 @@
-
 pipeline {
-    agent any  // Use any available agent
+    agent any
 
     tools {
-        maven 'Maven'  // Ensure this matches the name configured in Jenkins
+        maven 'Maven'
     }
+
     stages {
+
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/DakshhBN/ThirdProj.git'
+                git branch: 'main',
+                url: 'https://github.com/DakshhBN/ThirdProj.git'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'  // Run Maven build
+                sh 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'  // Run unit tests
+                sh 'mvn test'
             }
         }
 
-        
-        
-       
-        stage('Run Application') {
+        stage('Run Selenium') {
             steps {
-                // Start the JAR application
-                sh 'mvn exec:java -Dexec.mainClass="com.example.App"'
+                sh 'mvn exec:java'
             }
         }
-
-        
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo "Open SauceDemo: https://www.saucedemo.com"
         }
+
         failure {
-            echo 'Build failed!'
+            echo "Build FAILED"
         }
     }
-
 }
