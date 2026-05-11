@@ -1,48 +1,40 @@
+
 pipeline {
-    agent any
+    agent any  // Use any available agent
 
     tools {
-        maven 'maven'
+        maven 'Maven'  // Ensure this matches the name configured in Jenkins
     }
-
     stages {
-
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/DakshhBN/ThirdProj.git'
             }
         }
 
-        stage('Install Chrome') {
-            steps {
-                sh '''
-                sudo apt-get update
-                sudo apt-get install -y wget gnupg unzip
-                wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-                sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-                sudo apt-get update
-                sudo apt-get install -y google-chrome-stable
-                '''
-            }
-        }
-
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package'  // Run Maven build
             }
         }
 
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test'  // Run unit tests
             }
         }
 
+        
+        
+       
         stage('Run Application') {
             steps {
+                // Start the JAR application
                 sh 'mvn exec:java -Dexec.mainClass="com.example.App"'
             }
         }
+
+        
     }
 
     post {
@@ -53,4 +45,5 @@ pipeline {
             echo 'Build failed!'
         }
     }
+
 }
